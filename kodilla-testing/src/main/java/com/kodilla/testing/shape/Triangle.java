@@ -13,10 +13,10 @@ class Triangle{
     }
 
     public String getName(){
-        return null;
+        return "triangle";
     }
 
     public double getShapeArea(){
-        return 0;
+        return 0.5*a*h;
     }
 }

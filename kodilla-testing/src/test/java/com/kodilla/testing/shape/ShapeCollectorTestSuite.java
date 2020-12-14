@@ -94,7 +94,7 @@ public class ShapeCollectorTestSuite {
             Circle circle = new Circle(1, "circle");
             collector.addShape(circle);
             //Then
-            Assertions.assertEquals(1, collector.shapeList.size());
+            Assertions.assertEquals(1, collector.getShapeList().size());
 
         }
 
@@ -105,10 +105,10 @@ public class ShapeCollectorTestSuite {
             ShapeCollector collector = new ShapeCollector();
             Circle circle = new Circle(1,"circle");
             //When
-            boolean result = collector.shapeList.remove(circle);
+            boolean result = collector.removeShape(circle);
             //Then
             Assertions.assertFalse(result);
-            Assertions.assertEquals(0, collector.shapeList.size());
+            Assertions.assertEquals(0, collector.getShapeList().size());
         }
 
         @DisplayName("when remove shape from 1-element list , size of list should be 0")
@@ -119,10 +119,10 @@ public class ShapeCollectorTestSuite {
             Circle circle = new Circle(1,"circle");
             collector.addShape(circle);
             //When
-            boolean result = collector.shapeList.remove(circle);
+            boolean result = collector.removeShape(circle);
             //Then
             Assertions.assertTrue(result);
-            Assertions.assertEquals(0, collector.shapeList.size());
+            Assertions.assertEquals(0, collector.getShapeList().size());
         }
 
         @DisplayName("when retrieving object from non existing list index, should throw exception")
@@ -140,7 +140,7 @@ public class ShapeCollectorTestSuite {
             //Given
             ShapeCollector collector = new ShapeCollector();
             Circle circle = new Circle(1,"circle");
-            collector.shapeList.add(circle);
+            collector.addShape(circle);
             //When
             Shape shape = collector.getShape(0);
             //Then
@@ -155,7 +155,7 @@ public class ShapeCollectorTestSuite {
             //When
             String result = collector.showShapes();
             //Then
-            Assertions.assertNull(null);
+            Assertions.assertNull(result);
 
         }
 

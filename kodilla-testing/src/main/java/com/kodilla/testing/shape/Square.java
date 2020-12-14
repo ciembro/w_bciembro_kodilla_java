@@ -10,11 +10,11 @@ class Square{
     }
 
     public String getName(){
-        return null;
+        return "square";
     }
 
     public double getShapeArea(){
-        return 0;
+        return a*a;
     }
 
 }

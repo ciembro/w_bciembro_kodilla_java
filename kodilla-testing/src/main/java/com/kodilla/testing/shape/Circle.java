@@ -10,11 +10,11 @@ class Circle implements  Shape{
     }
 
     public String getName(){
-        return null;
+        return name;
     }
 
     public double getShapeArea(){
-        return 0;
+        return Math.PI*r*r;
     }
 
 }
