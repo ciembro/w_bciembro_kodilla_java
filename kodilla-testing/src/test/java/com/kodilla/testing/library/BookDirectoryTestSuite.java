@@ -1,5 +1,7 @@
 package com.kodilla.testing.library;
 
+import com.sun.source.tree.LambdaExpressionTree;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -68,7 +70,7 @@ public class BookDirectoryTestSuite {
         //Given
         BookLibrary bookLibrary = new BookLibrary(libraryDatabaseMock);
 //        List<Book> resultListOf10Books = generateListOfNBooks(10);
-        //niepotrzebne, bo to sie nie wywola
+        //niepotrzebne, bo to sie i tak nie wywola
 //        when(libraryDatabaseMock.listBooksWithCondition(anyString())).thenReturn(resultListOf10Books);
         //When
         List<Book> listOfBooks10 = bookLibrary.listBooksWithCondition("An");
