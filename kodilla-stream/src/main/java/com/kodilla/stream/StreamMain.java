@@ -1,13 +1,41 @@
 package com.kodilla.stream;
 
 import com.kodilla.stream.beautifier.PoemBeautifier;
+import com.kodilla.stream.forumuser.Forum;
+import com.kodilla.stream.forumuser.ForumUser;
 import com.kodilla.stream.iterate.NumbersGenerator;
-import com.kodilla.stream.lambda.*;
-import com.kodilla.stream.reference.FunctionalCalculator;
+import com.kodilla.stream.person.People;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StreamMain {
 
     public static void main(String[] args) {
+
+        //7.3
+        Forum forum = new Forum();
+        List<ForumUser> list = forum.getUserList();
+        Map<Integer, ForumUser> users = list.stream()
+                .filter(u -> u.getSex() == 'M')
+                .filter(u ->  u.getBirthday().plusYears(20).isBefore(LocalDate.now()))
+                .filter(u -> u.getNumOfPosts() >= 1)
+                .collect(Collectors.toMap(ForumUser::getId, user -> user));
+
+        for (Map.Entry<Integer, ForumUser> user : users.entrySet()){
+            System.out.println(user);
+        }
+
+
+//        People.getList().stream()
+//                .map(s -> s.toUpperCase())
+//                .filter(s -> s.length() > 11)
+//                .map(s -> s.substring(0, s.indexOf(' ') + 2) + ".")
+//                .filter(s -> s.substring(0, 1).equals("M"))
+//                .forEach(System.out::println);
+
 
         //7.2
         System.out.println("Using Stream to generate even numbers from 1 to 20");
@@ -20,24 +48,6 @@ public class StreamMain {
         System.out.println(poemBeautifier.beautify(text, t -> t.toUpperCase()));
         System.out.println(poemBeautifier.beautify(text, t -> "*** " + t + " ***"));
         System.out.println(poemBeautifier.beautify(text, t -> t.substring(0,4)));
-
-        //Ćwiczenia
-        Processor processor = new Processor();
-//        Executor codeToExecute = () -> System.out.println("This is an example text.");
-        processor.execute(() -> System.out.println("This is an example text."));
-
-        System.out.println("Lambda expressions");
-        ExpressionExecutor expressionExecutor = new ExpressionExecutor();
-        expressionExecutor.executeExpression(10, 5, (a,b) -> a+b);
-        expressionExecutor.executeExpression(10, 5, (a,b) -> a-b);
-        expressionExecutor.executeExpression(10, 5, (a,b) -> a*b);
-        expressionExecutor.executeExpression(10, 5, (a,b) -> a/b);
-
-        System.out.println("Expressions with method reference");
-        expressionExecutor.executeExpression(3,4, FunctionalCalculator::multiplyAByB);
-        expressionExecutor.executeExpression(3,4, FunctionalCalculator::addAToB);
-        expressionExecutor.executeExpression(3,4, FunctionalCalculator::subBFromA);
-        expressionExecutor.executeExpression(3,4, FunctionalCalculator::divideAByB);
 
     }
 }
