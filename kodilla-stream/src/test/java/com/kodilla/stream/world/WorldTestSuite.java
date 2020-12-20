@@ -11,7 +11,6 @@ public class WorldTestSuite {
     @Test
     void testGetPeopleQuantity(){
         //Given
-
         Country Poland = new Country(new BigDecimal("100"));
         Country Slovakia = new Country(new BigDecimal("50"));
         Country Spain = new Country(new BigDecimal("150"));

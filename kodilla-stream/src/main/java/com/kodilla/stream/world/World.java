@@ -6,7 +6,7 @@ import java.util.List;
 
 public final class World {
 
-    List<Continent> continents = new ArrayList<>();
+    private final List<Continent> continents = new ArrayList<>();
 
     public BigDecimal getPeopleQuantity(){
 
