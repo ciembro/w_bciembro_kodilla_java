@@ -1,4 +1,6 @@
 package com.kodilla.rps;
 
-public interface Move {
+public class Round {
+
+
 }
