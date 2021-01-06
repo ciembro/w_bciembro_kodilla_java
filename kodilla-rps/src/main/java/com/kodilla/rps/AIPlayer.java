@@ -1,27 +1,28 @@
 package com.kodilla.rps;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class AIPlayer extends Player {
-    HashMap<Integer, Symbol> possibleMoves = new HashMap<>();
 
-    public AIPlayer(){
-        super();
-        possibleMoves.put(1, new Rock());
-        possibleMoves.put(2, new Paper());
-        possibleMoves.put(3, new Scissors());
+    public AIPlayer() {
+        super("Imaginary friend");
     }
 
     Symbol move() {
         Random random = new Random();
-        int move = random.nextInt(3) + 1;
+        int move = drawSymbol();
         if (move == 1) {
-            return possibleMoves.get(1);
+            return move(new Rock());
         }
-        if (move == 2){
-            return possibleMoves.get(2);
+        if (move == 2) {
+            return move(new Paper());
         }
-        return possibleMoves.get(3);
+        return move(new Scissors());
     }
+
+    int drawSymbol(){
+        Random random = new Random();
+        return random.nextInt(3) + 1;
+    }
+
 }
