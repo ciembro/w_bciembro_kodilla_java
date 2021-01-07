@@ -9,7 +9,6 @@ public class AIPlayer extends Player {
     }
 
     Symbol move() {
-        Random random = new Random();
         int move = drawSymbol();
         if (move == 1) {
             return move(new Rock());

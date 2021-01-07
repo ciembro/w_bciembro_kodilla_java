@@ -15,8 +15,22 @@ public class RpsRunner {
             System.out.println("Hello! Please tell me your name");
             String name = scanner.nextLine();
             System.out.println("After how many wins u want to finish the game?");
-            int numOfWonRounds = scanner.nextInt();
-            scanner.nextLine();
+            int numOfWonRounds;
+
+            while (true){
+                command = scanner.nextLine();
+                try {
+                    numOfWonRounds = Integer.parseInt(command);
+                    if (numOfWonRounds == 0){
+                        System.out.println("Sorry, I don't recognize this command. Try again.");
+                    } else {
+                        break;
+                    }
+                } catch (NumberFormatException e){
+                    System.out.println("Sorry, I don't recognize this command. Try again.");
+                }
+            }
+
             Player humanPlayer = new Player(name);
             AIPlayer aiPlayer = new AIPlayer();
             Game game = new Game(humanPlayer,aiPlayer,numOfWonRounds);
@@ -55,7 +69,7 @@ public class RpsRunner {
                         }
                         break;
                     default:
-                        System.out.println("Invalid command. Try again");
+                        System.out.println("Sorry, I don't recognize this command. Try again.");
                 }
                 if (game.gameOver()){
                     game.printFinalScores();
@@ -68,7 +82,7 @@ public class RpsRunner {
                         }
                     } else {
                         while (!command.equals("n")){
-                            System.out.println("Invalid command");
+                            System.out.println("Sorry, I don't recognize this command. Try again.");
                             command = scanner.nextLine();
                         }
                     }
@@ -79,7 +93,7 @@ public class RpsRunner {
     }
 
     private static void printMenu(String name, int rounds){
-        System.out.println("Hi " + name + "! You need to win " + rounds + " times");
+        System.out.println("Hi, " + name + "! You need to win " + rounds + " times.");
         System.out.println("--------||--------");
         System.out.println("Choose what u want to do:");
         System.out.println("1 - rock");
@@ -98,7 +112,7 @@ public class RpsRunner {
         if (command.equals("n") || command.equals("N")) {
             return false;
         }
-        System.out.println("You need to put valid command");
+        System.out.println("Sorry, I don't recognize this command. Try again.");
         return false;
     }
 
