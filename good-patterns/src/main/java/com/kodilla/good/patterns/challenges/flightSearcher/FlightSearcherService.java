@@ -4,29 +4,29 @@ import java.util.List;
 import java.util.Map;
 
 public class FlightSearcherService {
-    final static FlightRepositoryRetriever flightRepositoryRetriever = new FlightRepositoryRetriever();
+    private static final FlightRepository flightRepository = new FlightRepository();
 
     public static void main(String[] args) {
         FlightSearchRequest flightSearchRequest = new FlightSearchRequest();
-        FlightRepository flightRepository = flightRepositoryRetriever.getFlightRepository();
 
-        FlightsFromOriginCitySearcher flightsFromOriginCitySearcher =
-                new FlightsFromOriginCitySearcher(flightRepository);
+        List<Flight> list = flightRepository.findFlightsFromOriginCity(flightSearchRequest.getOriginCity());
+        print(list);
 
-        List<Flight> flights = flightsFromOriginCitySearcher.findFlights(flightSearchRequest.getOriginCity());
-        print(flights);
+        list = flightRepository.findFlightsToDestCity(flightSearchRequest.getDestCity());
+        print(list);
 
-        FlightsToDestinationCitySearcher flightsToDestinationCitySearcher =
-                new FlightsToDestinationCitySearcher(flightRepository);
-        flights = flightsToDestinationCitySearcher.findFlights(flightSearchRequest.getDestCity());
-        print(flights);
+        Map<Flight, List<Flight>> map = flightRepository.findFlightsWithMidFlight(flightSearchRequest.getOriginCity(),
+                flightSearchRequest.getMidCity(), flightSearchRequest.getDestCity());
+        print(map);
 
-        FlightsWithMidStopSearcher flightsWithMidStopSearcher =
-                new FlightsWithMidStopSearcher(flightsFromOriginCitySearcher, flightsToDestinationCitySearcher);
 
-        Map<Flight, List<Flight>> flightMap = flightsWithMidStopSearcher.findFlights(
-                flightSearchRequest.getOriginCity(), flightSearchRequest.getMidCity(), flightSearchRequest.getDestCity()); ;
-        print(flightMap);
+
+
+
+
+
+
+
     }
 
     static void print(Map<Flight, List<Flight>> flights) {
