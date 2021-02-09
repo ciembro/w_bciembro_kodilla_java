@@ -32,4 +32,19 @@ public class ProducerWarehouse {
         warehouse.replace(product, availableQuantity, availableQuantity - quantityNeeded);
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProducerWarehouse that = (ProducerWarehouse) o;
+
+        return getWarehouse() != null ? getWarehouse().equals(that.getWarehouse()) : that.getWarehouse() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getWarehouse() != null ? getWarehouse().hashCode() : 0;
+    }
 }
