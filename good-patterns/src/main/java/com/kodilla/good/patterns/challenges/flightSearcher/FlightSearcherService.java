@@ -18,15 +18,7 @@ public class FlightSearcherService {
         Map<Flight, List<Flight>> map = flightRepository.findFlightsWithMidFlight(flightSearchRequest.getOriginCity(),
                 flightSearchRequest.getMidCity(), flightSearchRequest.getDestCity());
         print(map);
-
-
-
-
-
-
-
-
-
+        
     }
 
     static void print(Map<Flight, List<Flight>> flights) {
