@@ -2,5 +2,5 @@ package com.kodilla.spring.shape;
 
 public interface Shape {
 
-    String getShapeName();
+    public String getShapeName();
 }
