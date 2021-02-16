@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class LibraryTestSuite {
+public class LibraryWithAdnotationsTestSuite {
 
 //    ---zamiast czesci given w metodach testow---
     @Autowired
-    private Library library;
+    private LibraryWithAdnotations libraryWithAdnotations;
 
     @Test
     void testLoadFromDb() {
@@ -19,7 +19,7 @@ public class LibraryTestSuite {
 //        Library library = context.getBean(Library.class);
 
         //When
-        library.loadFromDb();
+        libraryWithAdnotations.loadFromDb();
 
         //Then
         //do nothing
@@ -29,7 +29,7 @@ public class LibraryTestSuite {
     void testSaveToDb() {
         //Given
         //When
-        library.saveToDb();
+        libraryWithAdnotations.saveToDb();
         //Then
         //do nothing
     }

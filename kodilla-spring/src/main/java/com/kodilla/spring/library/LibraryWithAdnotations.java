@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class Library {
+public class LibraryWithAdnotations {
 
     private final List<String> books = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class Library {
 //        this.libraryDbController = libraryDbController;
 //    }
 
-    public Library(){
+    public LibraryWithAdnotations(){
         //do nothing
     }
     public void saveToDb() {
