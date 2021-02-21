@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class LibraryTestSuite {
 
-
     @Test
     void testGetBooks(){
         //given
@@ -34,11 +33,12 @@ public class LibraryTestSuite {
         }
 
         //when
-        library.getBooks().add(new Book("title6", "author6,", LocalDate.now()));
+        Book book = new Book("title 1", "author 1", LocalDate.of(2012,3,22));
+        library.getBooks().remove(book);
 
         //then
-        assertEquals(6, library.getBooks().size());
-        assertEquals(6, shallowClonedLibrary.getBooks().size());
+        assertEquals(4, library.getBooks().size());
+        assertEquals(4, shallowClonedLibrary.getBooks().size());
         assertEquals(library.getBooks(), shallowClonedLibrary.getBooks());
         assertNotEquals(library.getBooks(), deepClonedLibrary.getBooks());
     }
@@ -47,11 +47,9 @@ public class LibraryTestSuite {
         Set<Book> books = new HashSet<>();
         IntStream.iterate(1, n -> n + 1)
                 .limit(5)
-                .forEach(n -> books.add(new Book("title " + n, "author" + n,
+                .forEach(n -> books.add(new Book("title " + n, "author " + n,
                         LocalDate.now().minusYears(10-n).plusMonths(n).plusDays(n))));
 
-        books.stream()
-                .forEach(System.out::println);
         return books;
     }
 }
