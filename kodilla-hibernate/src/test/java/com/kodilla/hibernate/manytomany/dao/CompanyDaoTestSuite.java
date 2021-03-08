@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -13,30 +15,21 @@ class CompanyDaoTestSuite {
 
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private EmployeeDao employeeDao;
+
+    Employee johnSmith = new Employee("John", "Smith");
+    Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
+    Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
+
+    Company softwareMachine = new Company("Software Machine");
+    Company dataMaesters = new Company("Data Maesters");
+    Company greyMatter = new Company("Grey Matter");
 
     @Test
     void testSaveManyToMany() {
         //Given
-        Employee johnSmith = new Employee("John", "Smith");
-        Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
-        Employee lindaKovalsky = new Employee("Linda", "Kovalsky");
-
-        Company softwareMachine = new Company("Software Machine");
-        Company dataMaesters = new Company("Data Maesters");
-        Company greyMatter = new Company("Grey Matter");
-
-        softwareMachine.getEmployees().add(johnSmith);
-        dataMaesters.getEmployees().add(stephanieClarckson);
-        dataMaesters.getEmployees().add(lindaKovalsky);
-        greyMatter.getEmployees().add(johnSmith);
-        greyMatter.getEmployees().add(lindaKovalsky);
-
-        johnSmith.getCompanies().add(softwareMachine);
-        johnSmith.getCompanies().add(greyMatter);
-        stephanieClarckson.getCompanies().add(dataMaesters);
-        lindaKovalsky.getCompanies().add(dataMaesters);
-        lindaKovalsky.getCompanies().add(greyMatter);
-
+        createData();
         //When
         companyDao.save(softwareMachine);
         int softwareMachineId = softwareMachine.getId();
@@ -58,5 +51,54 @@ class CompanyDaoTestSuite {
         } catch (Exception e) {
             //do nothing
         }
+    }
+
+    @Test
+    void testFindEmployeeByName(){
+        //given
+        createData();
+        employeeDao.save(johnSmith);
+        int employeeId = johnSmith.getId();
+
+        //when
+        List<Employee> employees = employeeDao.retrieveByName("Smith");
+
+        //then
+        try {
+            assertEquals(1, employees.size());
+        } finally {
+            employeeDao.deleteById(employeeId);
+        }
+    }
+
+    @Test
+    void testGetCompanyByNameFrag(){
+        //given
+        companyDao.save(softwareMachine);
+        int companyId = softwareMachine.getId();
+
+        //when
+        List<Company> companies = companyDao.retrieveByNameFragment("Sof");
+
+        //then
+        try {
+            assertEquals(1, companies.size());
+        } finally {
+            companyDao.deleteById(companyId);
+        }
+    }
+
+    private void createData(){
+        softwareMachine.getEmployees().add(johnSmith);
+        dataMaesters.getEmployees().add(stephanieClarckson);
+        dataMaesters.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieClarckson.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(dataMaesters);
+        lindaKovalsky.getCompanies().add(greyMatter);
     }
 }
