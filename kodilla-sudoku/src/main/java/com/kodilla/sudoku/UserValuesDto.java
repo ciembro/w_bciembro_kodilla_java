@@ -23,13 +23,4 @@ public class UserValuesDto {
     public int getValue() {
         return value;
     }
-
-    @Override
-    public String toString() {
-        return "UserValues{" +
-                "column=" + column +
-                ", row=" + row +
-                ", value=" + value +
-                '}';
-    }
 }

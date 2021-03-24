@@ -22,7 +22,12 @@ public class SudokuRow extends SudokuFragment {
     public String toString() {
         String row = "| ";
         for (int i = 0; i < SudokuBoard.BOARD_SIZE; i++){
-            row += getElement(i).getValue() + " ";
+            int value = getElement(i).getValue();
+            if (value == SudokuElement.EMPTY){
+                row += value + " ";
+            } else {
+                row += " " + value + " ";
+            }
             if (i == 2 || i == 5 || i == 8){
                 row += "|  ";
             }

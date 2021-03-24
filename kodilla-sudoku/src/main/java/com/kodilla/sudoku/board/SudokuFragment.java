@@ -7,8 +7,7 @@ public abstract class SudokuFragment {
 
     protected List<SudokuElement> elements = new ArrayList<>();
 
-    public SudokuFragment() {
-    }
+    public SudokuFragment() {}
 
     public List<SudokuElement> getElements() {
         return elements;
@@ -35,5 +34,4 @@ public abstract class SudokuFragment {
         }
         return false;
     }
-
 }

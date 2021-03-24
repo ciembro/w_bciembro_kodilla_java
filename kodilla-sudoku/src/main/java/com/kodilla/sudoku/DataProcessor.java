@@ -22,10 +22,4 @@ public class DataProcessor {
         return value > 0 && value < 10;
     }
 
-    public static void main(String[] args) {
-        DataProcessor dataReader = new DataProcessor();
-        UserValuesDto userValuesDto = dataReader.processInputValues("1,b,c");
-        System.out.println(userValuesDto);
-
-    }
 }

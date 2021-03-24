@@ -3,8 +3,8 @@ package com.kodilla.sudoku.board;
 
 public class SudokuColumn extends SudokuFragment {
 
-    public void createColumn(SudokuBoard sudokuBoard, int colIdx) {
-        for (SudokuRow row : sudokuBoard.getRows()) {
+    public void createColumn(SudokuBoard board, int colIdx) {
+        for (SudokuRow row : board.getRows()) {
             SudokuElement elem = row.getElement(colIdx);
             elements.add(elem);
         }

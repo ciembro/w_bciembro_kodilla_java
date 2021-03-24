@@ -19,25 +19,35 @@ public class SudokuGame {
     public static void main(String[] args) {
 
         boolean gameFinished = false;
-        SudokuGame theGame = new SudokuGame();
-        theGame.printMenu();
-        System.out.println(sudokuBoard);
+        SudokuGame theGame = startNewGame();
+
         while (!gameFinished) {
             String input = scanner.nextLine();
             if (input.equals("SUDOKU")){
-                theGame.solveSudoku();
-                System.out.println(sudokuBoard);
+                if (theGame.solveSudoku()){
+                    System.out.println(sudokuBoard);
+                }
                 gameFinished = !theGame.resolveSudoku();
+                if (!gameFinished){
+                   theGame = startNewGame();
+                }
             } else {
                 UserValuesDto userValuesDto = dataProcessor.processInputValues(input);
-                if (userValuesDto != null){
+                if (userValuesDto != null && sudokuBoard.validateBoard(userValuesDto)){
                     sudokuBoard.updateBoard(userValuesDto);
                     System.out.println(sudokuBoard);
                 } else {
-                    System.out.println("Niepoprawne dane");
+                    System.out.println("Niepoprawne dane.");
                 }
             }
         }
+    }
+
+    private static SudokuGame startNewGame(){
+        SudokuGame newGame = new SudokuGame();
+        printMenu();
+        System.out.println(sudokuBoard);
+        return newGame;
     }
 
     boolean resolveSudoku(){
@@ -50,20 +60,22 @@ public class SudokuGame {
             } else if (input.equals("n")){
                 return false;
             } else {
-                System.out.println("Niepoprawna odpowiedź, spróbuj ponownie");
+                System.out.println("Niepoprawna odpowiedź. Wpisz t dla tak, n dla nie.");
             }
         }
     }
 
-    private void solveSudoku(){
+    private boolean solveSudoku(){
         try {
-            sudokuSolver.solve();
+            sudokuBoard = sudokuSolver.solve();
+            return true;
         } catch (InvalidSudokuException e){
-            System.out.println("Wprowadzone sudoku jest niepoprawne");
+            System.out.println("Wprowadzone sudoku jest niepoprawne.");
+            return false;
         }
     }
 
-    private void printMenu(){
+    private static void printMenu(){
         System.out.println("Wprowadź dane w  następującej kolejności: (kolumna, wiersz, wartość)");
         System.out.println("Wpisz SUDOKU, aby rozwiązać planszę");
     }

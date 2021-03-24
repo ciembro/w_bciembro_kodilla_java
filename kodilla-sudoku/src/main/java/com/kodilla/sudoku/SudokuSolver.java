@@ -1,19 +1,19 @@
 package com.kodilla.sudoku;
 
 import com.kodilla.sudoku.board.*;
-import java.util.Iterator;
+
+import java.util.*;
 
 public class SudokuSolver {
 
-    private SudokuBoard sudokuBoard;
-    private SudokuBacktrack backtrack;
+    public SudokuBoard sudokuBoard;
+    private final Deque<SudokuBacktrack> backtrackStack = new ArrayDeque<>();
 
     public SudokuSolver(SudokuBoard sudokuBoard) {
         this.sudokuBoard = sudokuBoard;
     }
 
-    public void solve() throws InvalidSudokuException {
-
+    public SudokuBoard solve() throws InvalidSudokuException {
         while (!sudokuBoard.allPlacesFilled()){
             if (!iterateThroughRows() && !iterateThroughColumns() && !iterateThroughRegions()){
                 try {
@@ -23,6 +23,7 @@ public class SudokuSolver {
                 }
             }
         }
+        return sudokuBoard;
     }
 
     private boolean solveFragment(SudokuFragment fragment) throws InvalidSudokuException{
@@ -63,28 +64,23 @@ public class SudokuSolver {
         return wasModified;
     }
 
-    private boolean iterateThroughRegions() throws InvalidSudokuException{
+    public boolean iterateThroughRegions() throws InvalidSudokuException{
         boolean wasModified = false;
 
-        int initColIdx = 0;
-        SudokuRegion region = new SudokuRegion();
-        for (int i = 0; i < SudokuBoard.BOARD_SIZE/3; i++){
-            for (int rowIdx = 0; rowIdx < SudokuBoard.BOARD_SIZE; rowIdx++){
-                for (int colIdx = initColIdx; colIdx < initColIdx + 3; colIdx++){
-                    SudokuElement element = sudokuBoard.getRows()
-                            .get(rowIdx)
-                            .getElement(colIdx);
-                    region.getElements().add(element);
-                }
-                if ((rowIdx + 1) % 3 == 0){
-                    boolean wasProcessed = solveFragment(region);
-                    region = new SudokuRegion();
-                    if (!wasModified) {
-                        wasModified = wasProcessed;
-                    }
-                }
+        int colIdx = 0;
+        int rowIdx = 0;
+        while (colIdx < 9){
+            SudokuRegion region = new SudokuRegion();
+            region.createRegion(sudokuBoard, rowIdx, colIdx);
+            boolean wasProcessed = solveFragment(region);
+            if (!wasModified) {
+                wasModified = wasProcessed;
             }
-            initColIdx += 3;
+            rowIdx += 3;
+            if (rowIdx >= SudokuBoard.BOARD_SIZE){
+                rowIdx = 0;
+                colIdx += 3;
+            }
         }
         return wasModified;
     }
@@ -94,27 +90,26 @@ public class SudokuSolver {
         boolean clearPossibleValues = false;
         for (Iterator<Integer> i = element.getPossibleValues().iterator(); i.hasNext();){
             Integer possibleValue = i.next();
-            if (fragment.isAlreadyInFragment(element, possibleValue)){
-                i.remove();
-                if (element.hasOnlyOnePossibleDigit()){
-                    element.setValue(element.getPossibleValues().get(0));
-                    clearPossibleValues = true;
-                    break;
+            if (element.hasOnlyOnePossibleDigit()){
+                if (!fragment.isAlreadyInFragment(element, possibleValue)){
+                    element.setValue(possibleValue);
+                    i.remove();
+                    wasModified = true;
+                } else {
+                    if (!backtrackStack.isEmpty()){
+                        restoreBacktrack();
+                    } else {
+                        throw new InvalidSudokuException();
+                    }
                 }
+            } else if (fragment.isAlreadyInFragment(element, possibleValue)){
+                i.remove();
                 wasModified = true;
             } else if (!fragment.isPossibleInAnotherPlace(element, possibleValue)){
-               element.setValue(possibleValue);
-               i.remove();
-               clearPossibleValues = true;
-               wasModified = true;
-               break;
-
-            } else if (fragment.isPossibleInAnotherPlace(element, possibleValue) && element.hasOnlyOnePossibleDigit()){
-                if (backtrack != null){
-                    restoreBacktrack();
-                } else{
-                    throw new InvalidSudokuException();
-                }
+                element.setValue(possibleValue);
+                i.remove();
+                clearPossibleValues = true;
+                wasModified = true;
                 break;
             }
         }
@@ -133,7 +128,8 @@ public class SudokuSolver {
                 int guessedValue = emptyElem.guessValue();
                 if (guessedValue != -1) {
                     SudokuBoard boardToCopy = sudokuBoard.deepCopy();
-                    backtrack = new SudokuBacktrack(boardToCopy, rowIdx, colIdx, guessedValue);
+                    SudokuBacktrack backtrack = new SudokuBacktrack(boardToCopy, rowIdx, colIdx, guessedValue);
+                    backtrackStack.push(backtrack);
                     emptyElem.setValue(guessedValue);
                     emptyElem.getPossibleValues().clear();
                 }
@@ -141,11 +137,16 @@ public class SudokuSolver {
         }
     }
 
-    private void restoreBacktrack(){
+    private void restoreBacktrack() throws InvalidSudokuException{
+        SudokuBacktrack backtrack = backtrackStack.pop();
         sudokuBoard = backtrack.getBoard();
         int valueToRemove = backtrack.getGuessedValue();
-        sudokuBoard.getRows().get(backtrack.getRowIdx())
-                .getElement(backtrack.getColIdx()).removeValue(valueToRemove);
-    }
+        SudokuElement elementToUpdate = sudokuBoard.getRows().get(backtrack.getRowIdx())
+                .getElement(backtrack.getColIdx());
+        elementToUpdate.removeFromPossibleValues(valueToRemove);
 
+        if (elementToUpdate.getPossibleValues().size() == 0){
+            throw new InvalidSudokuException();
+        }
+    }
 }

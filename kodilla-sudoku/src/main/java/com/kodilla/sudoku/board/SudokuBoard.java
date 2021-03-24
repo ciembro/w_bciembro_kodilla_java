@@ -69,9 +69,51 @@ public class SudokuBoard extends Prototype<SudokuBoard> {
         return clonedBoard;
     }
 
+    public boolean validateBoard(UserValuesDto userValuesDto){
+        int inputRow = userValuesDto.getRow() - 1;
+        int inputCol = userValuesDto.getColumn() -1 ;
+        int inputValue = userValuesDto.getValue();
+        SudokuElement element = rows.get(inputRow).getElement(inputCol);
+
+        boolean isInRow = rows.get(inputRow).isAlreadyInFragment(element, inputValue);
+
+        SudokuColumn column = new SudokuColumn();
+        column.createColumn(this, inputCol);
+        boolean isInCol = column.isAlreadyInFragment(element, inputValue);
+
+        boolean isInRegion = false;
+        List<SudokuRegion> regions = getRegions();
+        for (SudokuRegion region : regions){
+            if (region.getElements().contains(element)){
+                if (region.isAlreadyInFragment(element, inputValue)){
+                    isInRegion = true;
+                    break;
+                }
+            }
+        }
+        return !isInRow && !isInCol && !isInRegion;
+    }
+
+    private List<SudokuRegion> getRegions(){
+        List<SudokuRegion> regions = new ArrayList<>();
+        int rowIdx = 0;
+        int colIdx = 0;
+        while (colIdx < 9){
+            SudokuRegion region = new SudokuRegion();
+            region.createRegion(this, rowIdx, colIdx);
+            regions.add(region);
+            rowIdx += 3;
+            if (rowIdx >= SudokuBoard.BOARD_SIZE){
+                rowIdx = 0;
+                colIdx += 3;
+            }
+        }
+        return regions;
+    }
+
     @Override
     public String toString() {
-        String rowSeparator = "|------ | ------ | ------ | \n";
+        String rowSeparator = "| -------- | --------- | --------- | \n";
         String board = rowSeparator;
         int i = 0;
         for (SudokuRow row : rows){

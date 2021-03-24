@@ -4,6 +4,7 @@ import com.kodilla.sudoku.board.SudokuBoard;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class SudokuBoardTestSuite {
 
@@ -18,6 +19,49 @@ public class SudokuBoardTestSuite {
         //then
         assertEquals(0,idx);
     }
+
+    @Test
+    void testValidateBoardWrongInRow(){
+        //given
+        board = new SudokuBoard();
+        UserValuesDto userValuesDto = new UserValuesDto(1,1,4);
+        board.updateBoard(userValuesDto);
+        System.out.println(board);
+        //when
+        userValuesDto = new UserValuesDto(2,1,4);
+        boolean isValid = board.validateBoard(userValuesDto);
+        //then
+        assertFalse(isValid);
+    }
+
+    @Test
+    void testValidateBoardWrongInColumn(){
+        //given
+        board = new SudokuBoard();
+        UserValuesDto userValuesDto = new UserValuesDto(5,1,4);
+        board.updateBoard(userValuesDto);
+        System.out.println(board);
+        //when
+        userValuesDto = new UserValuesDto(5,6,4);
+        boolean isValid = board.validateBoard(userValuesDto);
+        //then
+        assertFalse(isValid);
+    }
+
+    @Test
+    void testValidateBoardWrongInRegion(){
+        //given
+        board = new SudokuBoard();
+        UserValuesDto userValuesDto = new UserValuesDto(1,1,4);
+        board.updateBoard(userValuesDto);
+        System.out.println(board);
+        //when
+        userValuesDto = new UserValuesDto(2,2,4);
+        boolean isValid = board.validateBoard(userValuesDto);
+        //then
+        assertFalse(isValid);
+    }
+
 
     private void setData(){
         board = new SudokuBoard();
@@ -97,7 +141,6 @@ public class SudokuBoardTestSuite {
         board.updateBoard(userValuesDto);
         userValuesDto = new UserValuesDto(9,9,6);
         board.updateBoard(userValuesDto);
-
 
         System.out.println(board);
     }

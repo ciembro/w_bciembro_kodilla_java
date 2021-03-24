@@ -17,8 +17,8 @@ public class SudokuElement implements Cloneable{
         this.value = value;
     }
 
-    public void removeValue(int value){
-        possibleValues.remove((Integer) value);
+    public void removeFromPossibleValues(int value){
+        possibleValues.remove(Integer.valueOf(value));
     }
 
     public boolean hasOnlyOnePossibleDigit(){
@@ -61,7 +61,7 @@ public class SudokuElement implements Cloneable{
         SudokuElement clonedElement = (SudokuElement) super.clone();
         clonedElement.possibleValues = new ArrayList<>();
         for(Integer v : this.possibleValues){
-            clonedElement.possibleValues.add(v);
+            clonedElement.possibleValues.add(Integer.valueOf(v));
         }
         return clonedElement;
     }
