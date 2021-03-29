@@ -3,8 +3,7 @@ package com.kodilla.sudoku;
 import com.kodilla.sudoku.board.SudokuBoard;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardTestSuite {
 
@@ -61,7 +60,6 @@ public class SudokuBoardTestSuite {
         //then
         assertFalse(isValid);
     }
-
 
     private void setData(){
         board = new SudokuBoard();

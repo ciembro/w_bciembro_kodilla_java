@@ -1,6 +1,7 @@
 package com.kodilla.sudoku.board;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class SudokuFragment {
@@ -33,5 +34,16 @@ public abstract class SudokuFragment {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+        for (SudokuElement e : elements){
+            s+= e.getValue() + " ";
+        }
+        return s;
+
+
     }
 }

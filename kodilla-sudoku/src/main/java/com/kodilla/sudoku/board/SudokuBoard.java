@@ -74,7 +74,6 @@ public class SudokuBoard extends Prototype<SudokuBoard> {
         int inputCol = userValuesDto.getColumn() -1 ;
         int inputValue = userValuesDto.getValue();
         SudokuElement element = rows.get(inputRow).getElement(inputCol);
-
         boolean isInRow = rows.get(inputRow).isAlreadyInFragment(element, inputValue);
 
         SudokuColumn column = new SudokuColumn();
@@ -82,33 +81,36 @@ public class SudokuBoard extends Prototype<SudokuBoard> {
         boolean isInCol = column.isAlreadyInFragment(element, inputValue);
 
         boolean isInRegion = false;
-        List<SudokuRegion> regions = getRegions();
-        for (SudokuRegion region : regions){
-            if (region.getElements().contains(element)){
-                if (region.isAlreadyInFragment(element, inputValue)){
-                    isInRegion = true;
-                    break;
-                }
+        SudokuRegion region = getRegion(inputCol, inputRow);
+        for (SudokuElement e : region.getElements()){
+            if (e.getValue() == inputValue){
+                isInRegion = true;
+                break;
             }
         }
+
         return !isInRow && !isInCol && !isInRegion;
     }
 
-    private List<SudokuRegion> getRegions(){
-        List<SudokuRegion> regions = new ArrayList<>();
-        int rowIdx = 0;
-        int colIdx = 0;
-        while (colIdx < 9){
-            SudokuRegion region = new SudokuRegion();
-            region.createRegion(this, rowIdx, colIdx);
-            regions.add(region);
-            rowIdx += 3;
-            if (rowIdx >= SudokuBoard.BOARD_SIZE){
-                rowIdx = 0;
-                colIdx += 3;
-            }
+    private SudokuRegion getRegion(int inputCol, int inputRow){
+        int initCol = inputCol;
+        int initRow = inputRow;
+        if (inputCol % 3 == 2){
+            initCol = inputCol - 2;
+        } else if (inputCol % 3 == 1){
+            initCol = inputCol - 1;
         }
-        return regions;
+
+        if (inputRow % 3 == 2){
+            initRow = inputRow - 2;
+        } else if (inputRow % 3 == 1){
+            initRow = inputRow - 1;
+        }
+
+        SudokuRegion region = new SudokuRegion();
+        region.createRegion(this, initRow, initCol);
+
+        return region;
     }
 
     @Override
