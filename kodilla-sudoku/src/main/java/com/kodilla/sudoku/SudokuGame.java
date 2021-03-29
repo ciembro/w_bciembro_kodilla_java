@@ -37,7 +37,7 @@ public class SudokuGame {
                     sudokuBoard.updateBoard(userValuesDto);
                     System.out.println(sudokuBoard);
                 } else {
-                    System.out.println("Niepoprawne dane.");
+                    System.out.println("Niepoprawne dane. Wprowadź cyfry w kolejności: kolumna, wiersz, wartość");
                 }
             }
         }
@@ -76,7 +76,7 @@ public class SudokuGame {
     }
 
     private static void printMenu(){
-        System.out.println("Wprowadź dane w  następującej kolejności: (kolumna, wiersz, wartość)");
+        System.out.println("Wprowadź dane w zakresie 1-9 w następującej kolejności: (kolumna, wiersz, wartość)");
         System.out.println("Wpisz SUDOKU, aby rozwiązać planszę");
     }
 }
