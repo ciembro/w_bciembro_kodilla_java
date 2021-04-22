@@ -5,14 +5,20 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedNativeQueries(
-        @NamedNativeQuery(
-                name = "Company.retrieveByNameFragment",
-                query = "SELECT * FROM COMPANIES WHERE " +
-                        "SUBSTRING(COMPANY_NAME,1,3) = :NAME_FRAGMENT",
-                resultClass = Company.class
-        )
+
+@NamedNativeQuery(
+        name = "Company.retrieveByNameFragment",
+        query = "SELECT * FROM COMPANIES WHERE " +
+                "SUBSTRING(COMPANY_NAME,1,3) = :NAME_FRAGMENT",
+        resultClass = Company.class
 )
+
+@NamedNativeQuery(
+    name = "Company.getByNameFragment",
+    query = "SELECT * FROM COMPANIES WHERE COMPANY_NAME = '%':ARG'%'",
+    resultClass = Company.class
+)
+
 
 @Entity
 @Table(name = "COMPANIES")
@@ -58,5 +64,11 @@ public class Company {
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    public Company(int id, String name, List<Employee> employees) {
+        this.id = id;
+        this.name = name;
+        this.employees = employees;
     }
 }
