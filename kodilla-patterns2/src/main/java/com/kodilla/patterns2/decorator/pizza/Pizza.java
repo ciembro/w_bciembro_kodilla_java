@@ -1,8 +1,9 @@
-package com.kodilla.decorator.taxiportal;
+package com.kodilla.patterns2.decorator.pizza;
 
 import java.math.BigDecimal;
 
-public interface TaxiOrder {
+public interface Pizza {
+
     BigDecimal getCost();
     String getDescription();
 }

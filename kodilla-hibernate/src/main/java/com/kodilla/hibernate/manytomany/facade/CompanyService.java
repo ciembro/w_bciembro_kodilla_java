@@ -22,7 +22,10 @@ public class CompanyService {
     }
 
     public List<Company> getCompaniesByNameFrag(String nameFrag){
-        System.out.println("NAME FRAG  " + nameFrag);
         return companyDao.getByNameFragment(nameFrag);
+    }
+
+    public List<Employee> getEmployeesByNameFrag(String lastnameFrag){
+        return employeeDao.getByNameFragment(lastnameFrag);
     }
 }

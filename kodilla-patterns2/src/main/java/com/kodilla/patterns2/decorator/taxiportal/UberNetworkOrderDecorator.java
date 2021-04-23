@@ -1,4 +1,4 @@
-package com.kodilla.decorator.taxiportal;
+package com.kodilla.patterns2.decorator.taxiportal;
 
 import java.math.BigDecimal;
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 @NamedNativeQuery(
     name = "Company.getByNameFragment",
-    query = "SELECT * FROM COMPANIES WHERE COMPANY_NAME = '%':ARG'%'",
+    query = "SELECT * FROM COMPANIES WHERE COMPANY_NAME LIKE CONCAT('%', :ARG, '%')",
     resultClass = Company.class
 )
 
@@ -66,9 +66,4 @@ public class Company {
         this.name = name;
     }
 
-    public Company(int id, String name, List<Employee> employees) {
-        this.id = id;
-        this.name = name;
-        this.employees = employees;
-    }
 }
